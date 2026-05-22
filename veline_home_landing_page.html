@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Veline Home | Home & Carpet Cleaning</title>
+  <meta name="description" content="Veline Home provides upholstery, carpet, mattress, pet odor and move-in / move-out cleaning services. Follow us on Facebook, Instagram and TikTok." />
+
+  <style>
+    :root {
+      --cream: #f6f0e7;
+      --cream-2: #fffaf2;
+      --green: #20301f;
+      --green-soft: #7f8b65;
+      --gold: #c8a45c;
+      --text: #1f241d;
+      --muted: #626557;
+      --line: rgba(32, 48, 31, 0.16);
+      --shadow: 0 24px 70px rgba(32, 48, 31, 0.16);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      background: var(--cream);
+    }
+
+    a { color: inherit; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px clamp(18px, 5vw, 64px);
+      background: rgba(246, 240, 231, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(32, 48, 31, 0.08);
+    }
+
+    .logo img {
+      width: clamp(132px, 18vw, 210px);
+      height: auto;
+      display: block;
+    }
+
+    .top-socials {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .icon-link {
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      text-decoration: none;
+      color: var(--green);
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+    }
+
+    .icon-link:hover {
+      transform: translateY(-2px);
+      border-color: var(--line);
+      background: rgba(255, 250, 242, 0.72);
+    }
+
+    .icon-link svg {
+      width: 25px;
+      height: 25px;
+      fill: currentColor;
+    }
+
+    .hero {
+      position: relative;
+      min-height: calc(100vh - 92px);
+      overflow: hidden;
+      background: var(--cream-2);
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.55s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(246,240,231,0.72) 0%, rgba(246,240,231,0.32) 42%, rgba(246,240,231,0.04) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      min-height: calc(100vh - 92px);
+      display: flex;
+      align-items: center;
+      padding: clamp(34px, 7vw, 92px);
+    }
+
+    .hero-text {
+      width: min(560px, 92vw);
+      color: var(--green);
+    }
+
+    .hero-text h1 {
+      margin: 0;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-weight: 500;
+      font-size: clamp(44px, 8vw, 78px);
+      line-height: 0.96;
+      letter-spacing: -0.045em;
+    }
+
+    .gold-line {
+      width: 86px;
+      height: 3px;
+      background: var(--gold);
+      margin: 24px 0;
+    }
+
+    .hero-text p {
+      margin: 0;
+      max-width: 360px;
+      font-size: clamp(18px, 2vw, 24px);
+      line-height: 1.38;
+      color: var(--text);
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      z-index: 10;
+      width: 56px;
+      height: 56px;
+      border-radius: 999px;
+      border: 0;
+      background: rgba(255, 250, 242, 0.92);
+      color: var(--green);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 12px 34px rgba(32, 48, 31, 0.16);
+      transform: translateY(-50%);
+      transition: 0.2s ease;
+    }
+
+    .arrow:hover { transform: translateY(-50%) scale(1.04); }
+    .arrow.prev { left: clamp(14px, 3vw, 34px); }
+    .arrow.next { right: clamp(14px, 3vw, 34px); }
+
+    .arrow svg {
+      width: 26px;
+      height: 26px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      fill: none;
+    }
+
+    .dots {
+      position: absolute;
+      left: 50%;
+      bottom: 24px;
+      z-index: 10;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 0;
+      background: rgba(255,255,255,0.72);
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .dot.active {
+      width: 26px;
+      background: var(--gold);
+    }
+
+    .intro {
+      padding: clamp(48px, 7vw, 84px) 20px;
+      text-align: center;
+      background: linear-gradient(180deg, var(--cream-2), var(--cream));
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .intro h2 {
+      margin: 0;
+      font-family: Georgia, 'Times New Roman', serif;
+      color: var(--green);
+      font-weight: 500;
+      font-size: clamp(42px, 7vw, 72px);
+      letter-spacing: -0.045em;
+    }
+
+    .intro .center-line {
+      width: 78px;
+      height: 2px;
+      background: var(--gold);
+      margin: 22px auto;
+    }
+
+    .intro p {
+      max-width: 620px;
+      margin: 0 auto 36px;
+      color: var(--text);
+      font-size: clamp(19px, 2.5vw, 26px);
+      line-height: 1.38;
+    }
+
+    .features {
+      width: min(900px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .feature {
+      padding: 6px 18px 0;
+      border-right: 1px solid rgba(32, 48, 31, 0.14);
+    }
+
+    .feature:last-child { border-right: 0; }
+
+    .feature-icon {
+      width: 78px;
+      height: 78px;
+      margin: 0 auto 14px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: #fffaf2;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 14px 34px rgba(32, 48, 31, 0.13);
+    }
+
+    .feature-icon svg {
+      width: 38px;
+      height: 38px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.7;
+    }
+
+    .feature span {
+      display: block;
+      color: var(--text);
+      font-size: 18px;
+      line-height: 1.28;
+    }
+
+    .social-section {
+      padding: clamp(46px, 7vw, 70px) 20px;
+      text-align: center;
+      background: radial-gradient(circle at center, #34452d 0%, var(--green) 78%);
+      color: #fffaf2;
+    }
+
+    .social-section h2 {
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      font-size: clamp(16px, 2vw, 22px);
+      font-weight: 600;
+    }
+
+    .social-section .center-line {
+      width: 70px;
+      height: 2px;
+      background: var(--gold);
+      margin: 20px auto 28px;
+    }
+
+    .social-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .social-button {
+      min-width: 178px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px 22px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 250, 242, 0.55);
+      color: #fffaf2;
+      text-decoration: none;
+      font-size: 18px;
+      transition: 0.2s ease;
+    }
+
+    .social-button:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 250, 242, 0.08);
+    }
+
+    .social-button svg {
+      width: 28px;
+      height: 28px;
+      fill: currentColor;
+    }
+
+    footer {
+      text-align: center;
+      padding: 18px;
+      color: rgba(255, 250, 242, 0.72);
+      background: var(--green);
+      font-size: 14px;
+    }
+
+    @media (max-width: 760px) {
+      .site-header {
+        padding: 14px 16px;
+      }
+
+      .logo img {
+        width: 132px;
+      }
+
+      .top-socials {
+        gap: 6px;
+      }
+
+      .icon-link {
+        width: 36px;
+        height: 36px;
+      }
+
+      .icon-link svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .hero,
+      .hero-content {
+        min-height: 76vh;
+      }
+
+      .slide::after {
+        background: linear-gradient(180deg, rgba(246,240,231,0.72) 0%, rgba(246,240,231,0.38) 45%, rgba(246,240,231,0.06) 100%);
+      }
+
+      .hero-content {
+        align-items: flex-start;
+        padding: 58px 22px 86px;
+      }
+
+      .hero-text h1 {
+        font-size: clamp(40px, 13vw, 62px);
+      }
+
+      .hero-text p {
+        max-width: 260px;
+        font-size: 18px;
+      }
+
+      .arrow {
+        width: 46px;
+        height: 46px;
+        top: auto;
+        bottom: 22px;
+        transform: none;
+      }
+
+      .arrow:hover { transform: scale(1.03); }
+      .arrow.prev { left: 18px; }
+      .arrow.next { right: 18px; }
+
+      .dots {
+        bottom: 38px;
+      }
+
+      .features {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px 10px;
+      }
+
+      .feature {
+        border-right: 0;
+        padding: 0 8px;
+      }
+
+      .feature-icon {
+        width: 70px;
+        height: 70px;
+      }
+
+      .feature span {
+        font-size: 16px;
+      }
+
+      .social-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        width: min(340px, 100%);
+        margin: 0 auto;
+      }
+
+      .social-button {
+        width: 100%;
+        min-width: 0;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .hero,
+      .hero-content {
+        min-height: 72vh;
+      }
+
+      .hero-content {
+        padding-top: 44px;
+      }
+
+      .intro {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="#" aria-label="Veline Home home page">
+      <img src="Veline SVG black.svg" alt="Veline Home logo" />
+    </a>
+
+    <nav class="top-socials" aria-label="Social media links">
+      <a class="icon-link" href="https://www.facebook.com/velinehome" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.48 17.52 2 11.94 2S2 6.48 2 12.06c0 5.02 3.66 9.19 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.88 3.77-3.88 1.09 0 2.23.2 2.23.2v2.45h-1.25c-1.24 0-1.62.77-1.62 1.56v1.88h2.76l-.44 2.91h-2.32V22c4.78-.75 8.43-4.92 8.43-9.94z"/></svg>
+      </a>
+      <a class="icon-link" href="https://www.instagram.com/veline.home/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2zm-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6zm9.65 1.55a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8zm0 2a2.9 2.9 0 1 0 0 5.8 2.9 2.9 0 0 0 0-5.8z"/></svg>
+      </a>
+      <a class="icon-link" href="https://www.tiktok.com/@veline.home" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2c.32 2.43 1.68 3.88 4.08 4.03v3.06c-1.39.13-2.61-.32-4-1.17v5.73c0 7.28-7.94 9.55-11.13 4.34-2.05-3.35-.8-9.23 5.78-9.46v3.23c-.45.07-.93.18-1.37.33-1.31.44-2.06 1.26-1.85 2.71.4 2.78 5.5 3.6 5.08-1.83V2h3.41z"/></svg>
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Image slider">
+      <div class="slide active"><img src="Instagram post 1 pic.png" alt="Veline Home fresh living room" /></div>
+      <div class="slide"><img src="Instagram post 4 pic.png" alt="Carpet cleaning service" /></div>
+      <div class="slide"><img src="Instagram post 5 pic.png" alt="Upholstery cleaning service" /></div>
+      <div class="slide"><img src="Instagram post 6 pic.png" alt="Pet odor and stain treatment" /></div>
+      <div class="slide"><img src="Instagram post 7 pic.png" alt="Mattress cleaning service" /></div>
+      <div class="slide"><img src="Instagram post 8 pic.png" alt="Move-in and move-out cleaning" /></div>
+
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>Fresh spaces.<br>Clean comfort.</h1>
+          <div class="gold-line"></div>
+          <p>Home cleaning you can trust.</p>
+        </div>
+      </div>
+
+      <button class="arrow prev" type="button" aria-label="Previous image">
+        <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button class="arrow next" type="button" aria-label="Next image">
+        <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+
+      <div class="dots" aria-label="Slider navigation"></div>
+    </section>
+
+    <section class="intro" aria-label="Welcome section">
+      <p class="eyebrow">Welcome to</p>
+      <h2>Veline Home</h2>
+      <div class="center-line"></div>
+      <p>We clean with care so you can enjoy a fresher, healthier home.</p>
+
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 4C11 5 6 10 5 19c9-1 14-6 15-15z"/><path d="M5 19c4-5 8-8 13-11"/></svg>
+          </div>
+          <span>Eco-friendly<br>products</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2l1.7 5.1L19 9l-5.3 1.9L12 16l-1.7-5.1L5 9l5.3-1.9L12 2z"/><path d="M19 14l.9 2.7L23 18l-3.1 1.3L19 22l-.9-2.7L15 18l3.1-1.3L19 14z"/></svg>
+          </div>
+          <span>Deep cleaning<br>care</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 13c-3 0-6 2-6 5 0 2 2 3 6 3s6-1 6-3c0-3-3-5-6-5z"/><path d="M7 10c-1.2 0-2-1-2-2.3S5.8 5 7 5s2 1 2 2.7S8.2 10 7 10zM17 10c-1.2 0-2-1-2-2.3S15.8 5 17 5s2 1 2 2.7S18.2 10 17 10zM12 9c-1.2 0-2-1-2-2.3S10.8 4 12 4s2 1 2 2.7S13.2 9 12 9z"/></svg>
+          </div>
+          <span>Pet & family<br>friendly</span>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+          </div>
+          <span>Move-in /<br>Move-out</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="social-section" aria-label="Social media section">
+      <h2>Find us on social media</h2>
+      <div class="center-line"></div>
+
+      <div class="social-buttons">
+        <a class="social-button" href="https://www.facebook.com/velinehome" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.48 17.52 2 11.94 2S2 6.48 2 12.06c0 5.02 3.66 9.19 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.5 1.49-3.88 3.77-3.88 1.09 0 2.23.2 2.23.2v2.45h-1.25c-1.24 0-1.62.77-1.62 1.56v1.88h2.76l-.44 2.91h-2.32V22c4.78-.75 8.43-4.92 8.43-9.94z"/></svg>
+          Facebook
+        </a>
+        <a class="social-button" href="https://www.instagram.com/veline.home/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2zm-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6zm9.65 1.55a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8zm0 2a2.9 2.9 0 1 0 0 5.8 2.9 2.9 0 0 0 0-5.8z"/></svg>
+          Instagram
+        </a>
+        <a class="social-button" href="https://www.tiktok.com/@veline.home" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 2c.32 2.43 1.68 3.88 4.08 4.03v3.06c-1.39.13-2.61-.32-4-1.17v5.73c0 7.28-7.94 9.55-11.13 4.34-2.05-3.35-.8-9.23 5.78-9.46v3.23c-.45.07-.93.18-1.37.33-1.31.44-2.06 1.26-1.85 2.71.4 2.78 5.5 3.6 5.08-1.83V2h3.41z"/></svg>
+          TikTok
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 Veline Home. All rights reserved.</footer>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const dotsContainer = document.querySelector('.dots');
+    const prevButton = document.querySelector('.prev');
+    const nextButton = document.querySelector('.next');
+    let currentSlide = 0;
+    let timer;
+
+    slides.forEach((_, index) => {
+      const dot = document.createElement('button');
+      dot.className = 'dot' + (index === 0 ? ' active' : '');
+      dot.type = 'button';
+      dot.setAttribute('aria-label', `Go to image ${index + 1}`);
+      dot.addEventListener('click', () => showSlide(index, true));
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = Array.from(document.querySelectorAll('.dot'));
+
+    function showSlide(index, resetTimer = false) {
+      currentSlide = (index + slides.length) % slides.length;
+
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === currentSlide);
+      });
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+      });
+
+      if (resetTimer) restartAutoPlay();
+    }
+
+    function nextSlide() {
+      showSlide(currentSlide + 1);
+    }
+
+    function restartAutoPlay() {
+      clearInterval(timer);
+      timer = setInterval(nextSlide, 5000);
+    }
+
+    prevButton.addEventListener('click', () => showSlide(currentSlide - 1, true));
+    nextButton.addEventListener('click', () => showSlide(currentSlide + 1, true));
+
+    restartAutoPlay();
+  </script>
+</body>
+</html>
